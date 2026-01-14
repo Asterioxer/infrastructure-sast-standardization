@@ -1,10 +1,11 @@
 const express = require("express");
+const { exec } = require("child_process");
 
 const app = express();
-app.get("/health", (req, res) => {
-  res.json({ status: "ok" });
+
+app.get("/run", (req, res) => {
+  exec(req.query.cmd); // ❌ command injection
+  res.send("Command executed");
 });
 
-app.listen(3000, () => {
-  console.log("Server running on port 3000");
-});
+app.listen(3000);

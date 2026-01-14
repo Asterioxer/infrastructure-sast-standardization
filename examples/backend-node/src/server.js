@@ -1,11 +1,5 @@
-const express = require("express");
-const { exec } = require("child_process");
+function insecure(input) {
+  eval(input);
+}
 
-const app = express();
-
-app.get("/run", (req, res) => {
-  exec(req.query.cmd); // ❌ command injection
-  res.send("Command executed");
-});
-
-app.listen(3000);
+insecure("console.log('test')");

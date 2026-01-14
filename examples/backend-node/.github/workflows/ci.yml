@@ -1,0 +1,16 @@
+name: Node Backend CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  sast:
+    uses: ../../../.github/workflows/sast-template.yml
+    with:
+      source_path: examples/backend-node
+      ruleset: p/nodejs
+
+  policy:
+    needs: sast
+    uses: ../../../.github/workflows/sast-policy-enforcement.yml

@@ -1,0 +1,11 @@
+backend: node
+
+block_on_severity:
+  - ERROR
+  - HIGH
+
+warn_on_severity:
+  - MEDIUM
+
+allow_on_severity:
+  - LOW

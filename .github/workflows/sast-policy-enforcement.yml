@@ -9,20 +9,43 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Step 1: Checkout repo to access policy files
+      - name: Checkout policy repository
+        uses: actions/checkout@v4
+
+      # Step 2: Download SAST results artifact
       - name: Download SAST results
         uses: actions/download-artifact@v4
         with:
           name: sast-results
 
-      - name: Enforce policy
+      # Step 3: Load policy configuration
+      - name: Load SAST policies
+        id: load-policy
         run: |
-          findings=$(jq '.results | length' sast-results.json)
+          echo "📜 Loading SAST policy configuration"
 
-          echo "🔍 Total SAST findings detected: $findings"
+          BLOCK_SEVERITIES=$(yq '.block_on_severity[]' policies/severity-thresholds.yml | tr '\n' ' ')
+          WARN_SEVERITIES=$(yq '.warn_on_severity[]' policies/severity-thresholds.yml | tr '\n' ' ')
 
-          if [ "$findings" -gt 0 ]; then
-            echo "❌ Policy violation: SAST findings present"
-            exit 1
-          else
+          echo "block_severities=$BLOCK_SEVERITIES" >> $GITHUB_OUTPUT
+          echo "warn_severities=$WARN_SEVERITIES" >> $GITHUB_OUTPUT
+
+          echo "🚨 Blocking severities: $BLOCK_SEVERITIES"
+          echo "⚠️ Warning severities: $WARN_SEVERITIES"
+
+      # Step 4: Enforce policy based on findings
+      - name: Enforce SAST policy
+        run: |
+          FINDINGS_COUNT=$(jq '.results | length' sast-results.json)
+
+          echo "🔍 Total SAST findings detected: $FINDINGS_COUNT"
+
+          if [ "$FINDINGS_COUNT" -eq 0 ]; then
             echo "✅ Policy passed: No SAST findings"
+            exit 0
           fi
+
+          echo "❌ Policy violation: SAST findings present"
+          echo "📌 Refer to policies/severity-thresholds.yml for enforcement rules"
+          exit 1

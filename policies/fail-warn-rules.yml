@@ -1,0 +1,13 @@
+ci_behavior:
+  fail:
+    when:
+      findings_present: true
+      severity_in: [ERROR, HIGH]
+
+  warn:
+    when:
+      severity_in: [MEDIUM]
+
+  allow:
+    when:
+      severity_in: [LOW]

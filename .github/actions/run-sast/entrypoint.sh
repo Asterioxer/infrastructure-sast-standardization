@@ -12,10 +12,20 @@ echo "📜 Ruleset: $RULESET"
 pip install --quiet semgrep
 
 # Run scan (do NOT fail here)
+cat << 'EOF' > test-node-rule.yml
+rules:
+  - id: node-force-fail
+    pattern: eval(...)
+    message: "Eval usage detected (test rule)"
+    severity: ERROR
+    languages: [javascript]
+EOF
+
 semgrep scan \
-  --config="$RULESET" \
+  --config=test-node-rule.yml \
   --json \
   "$SOURCE_PATH" > sast-results.json || true
+
 
 echo "✅ SAST scan completed"
 echo "📄 Results written to sast-results.json"

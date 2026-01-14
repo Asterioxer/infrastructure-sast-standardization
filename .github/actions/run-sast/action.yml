@@ -1,0 +1,28 @@
+name: "Run SAST Scan"
+description: "Executes SAST scanning for Node.js backends using Semgrep"
+
+inputs:
+  source_path:
+    description: "Path to the source code to scan"
+    required: false
+    default: "."
+
+  ruleset:
+    description: "Semgrep ruleset to apply"
+    required: false
+    default: "p/nodejs"
+
+outputs:
+  results_file:
+    description: "Path to the SAST results JSON file"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Run SAST entrypoint
+      shell: bash
+      run: |
+        chmod +x ${{ github.action_path }}/entrypoint.sh
+        ${{ github.action_path }}/entrypoint.sh \
+          "${{ inputs.source_path }}" \
+          "${{ inputs.ruleset }}"

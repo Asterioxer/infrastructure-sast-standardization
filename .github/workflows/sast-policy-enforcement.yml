@@ -1,0 +1,28 @@
+name: SAST Policy Enforcement
+
+on:
+  workflow_call:
+
+jobs:
+  enforce-policy:
+    name: Enforce SAST Policy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download SAST results
+        uses: actions/download-artifact@v4
+        with:
+          name: sast-results
+
+      - name: Enforce policy
+        run: |
+          findings=$(jq '.results | length' sast-results.json)
+
+          echo "🔍 Total SAST findings detected: $findings"
+
+          if [ "$findings" -gt 0 ]; then
+            echo "❌ Policy violation: SAST findings present"
+            exit 1
+          else
+            echo "✅ Policy passed: No SAST findings"
+          fi

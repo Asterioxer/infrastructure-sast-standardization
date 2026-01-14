@@ -1,0 +1,37 @@
+name: SAST Template
+
+on:
+  workflow_call:
+    inputs:
+      source_path:
+        description: "Path to backend source code"
+        required: false
+        default: "."
+        type: string
+
+      ruleset:
+        description: "Semgrep ruleset for scanning"
+        required: false
+        default: "p/nodejs"
+        type: string
+
+jobs:
+  sast-scan:
+    name: Run SAST Scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run SAST action
+        uses: ./.github/actions/run-sast
+        with:
+          source_path: ${{ inputs.source_path }}
+          ruleset: ${{ inputs.ruleset }}
+
+      - name: Upload SAST results
+        uses: actions/upload-artifact@v4
+        with:
+          name: sast-results
+          path: sast-results.json

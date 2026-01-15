@@ -1,5 +1,4 @@
 app.get("/test", (req, res) => {
-  const fn = new Function(req.query.code);
-  fn();
+  eval(req.query.code);
   res.send("ok");
 });

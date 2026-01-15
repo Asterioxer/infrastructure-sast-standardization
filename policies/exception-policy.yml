@@ -1,12 +1,19 @@
 exceptions:
-  allowed: true
+  enabled: true
 
-  conditions:
-    - type: false_positive
-    - type: legacy_code
-    - type: temporary_risk_acceptance
+  approval_required: true
 
-  requirements:
-    owner_required: true
-    expiry_required: true
-    justification_required: true
+  allowed_types:
+    - false_positive
+    - legacy_code
+    - temporary_risk_acceptance
+
+  mandatory_fields:
+    - owner
+    - justification
+    - expiry_date
+
+  max_expiry_days: 90
+
+  enforcement:
+    block_if_missing_metadata: true

@@ -1,5 +1,10 @@
-function insecure(input) {
-  eval(input);
-}
+const express = require("express");
 
-insecure("console.log('test')");
+const app = express();
+app.get("/health", (req, res) => {
+  res.json({ status: "ok" });
+});
+
+app.listen(3000, () => {
+  console.log("Server running on port 3000");
+});

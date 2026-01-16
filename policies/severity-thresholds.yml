@@ -1,20 +1,11 @@
-defaults:
-  block_on:
-    - ERROR
-    - HIGH
-
-  warn_on:
-    - MEDIUM
-
-  allow_on:
-    - LOW
-
-languages:
+backends:
   node:
-    inherit: defaults
-
-  python:
-    inherit: defaults
-
-  java:
-    inherit: defaults
+    block_on_severity:
+      - CRITICAL
+      - HIGH
+ 
+    warn_on_severity:
+      - MEDIUM
+ 
+    allow_on_severity:
+      - LOW

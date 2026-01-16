@@ -1,19 +1,24 @@
 exceptions:
   enabled: true
-
-  approval_required: true
-
+ 
   allowed_types:
     - false_positive
     - legacy_code
     - temporary_risk_acceptance
-
-  mandatory_fields:
-    - owner
-    - justification
-    - expiry_date
-
-  max_expiry_days: 90
-
+ 
   enforcement:
-    block_if_missing_metadata: true
+    owner_required: true
+    expiry_required: true
+    justification_required: true
+ 
+  rules:
+    - applies_to_severity:
+        - LOW
+        - MEDIUM
+      approval_required: true
+ 
+    - applies_to_severity:
+        - HIGH
+        - CRITICAL
+      approval_required: true
+      security_team_required: true

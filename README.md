@@ -40,3 +40,12 @@ Refer to:
 - Scanning logic is centralized
 - Policy enforcement is configurable via YAML
 - Exceptions are documented and auditable
+
+---
+
+## SAST Tool Evaluation & Rationale
+
+For detailed evaluation, usage guidance, and SDLC placement of SAST tools, see:
+
+🔗 [sast-tools-evaluation](https://github.com/Asterioxer/sast-tools-evaluation)
+
